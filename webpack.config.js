@@ -5,13 +5,18 @@ var CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { BaseHrefWebpackPlugin } = require('base-href-webpack-plugin');
 
+const contextPath = 'bpmstg'
+const envs = {
+  bpmstg: 'https://www-qa.accessaudi.com/',
+  bpm86dev: 'https://ssointernal-dev1.vwoa.na.vwg/'
+}
 
 module.exports = {
     context: __dirname,
     entry: './index.js',
     output: {
-        publicPath: '/bpm86dev/IncentivesPortal',
-        path: path.join(__dirname, '/bpm86dev/IncentivesPortal'),
+        publicPath: `/${contextPath}/IncentivesPortal`,
+        path: path.join(__dirname, '/dist'),
         filename: 'index.js'
     },
     plugins: [
@@ -22,8 +27,8 @@ module.exports = {
         new CopyPlugin([
             { 
               from: path.join(__dirname, '/../AICPortal'), 
-              to: path.join(__dirname, '/bpm86dev/IncentivesPortal'),
-              ignore: ['.git'],
+              to: path.join(__dirname, `dist/${contextPath}/IncentivesPortal`),
+              ignore: ['.git/**/*'],
             }
           ]),
     ],
@@ -49,21 +54,23 @@ module.exports = {
       },
     // devtool: 'source-map',
     devServer: {
-        contentBase: path.join(__dirname, ''),
+        contentBase: path.join(__dirname, '/dist'),
         compress: false,
         port: 4300,
-        publicPath: path.join(__dirname, '/bpm86dev/IncentivesPortal'),
+        publicPath: path.join(__dirname, `/dist/${contextPath}/IncentivesPortal`),
         proxy: {
-          '/bpm86dev/ui-services': {
+          [`/${contextPath}/ui-services`]: {
             
-              target: 'https://ssointernal-dev1.vwoa.na.vwg/bpm86dev/ui-services',
+              target: envs[contextPath],
               secure: false,
               changeOrigin: true,
-              cookieDomainRewrite: true
-            
+              cookieDomainRewrite: true,
+              headers: {
+                'Cookie': '<INTERT Cookie HERE>'
+              }
           }
         },
-        // open: true, // Here
-        openPage: 'bpm86dev/IncentivesPortal' // And here
+        open: true,
+        openPage: `${contextPath}/IncentivesPortal`
     }
 }
