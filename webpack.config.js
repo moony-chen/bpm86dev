@@ -11,6 +11,17 @@ const envs = {
   bpm86dev: 'https://ssointernal-dev1.vwoa.na.vwg/'
 }
 
+const proxy = {
+            
+  target: envs[contextPath],
+  secure: false,
+  changeOrigin: true,
+  cookieDomainRewrite: true,
+  headers: {
+    'Cookie': '<Input Cookie Here>'
+  }
+}
+
 module.exports = {
     context: __dirname,
     entry: './index.js',
@@ -59,16 +70,8 @@ module.exports = {
         port: 4300,
         publicPath: path.join(__dirname, `/dist/${contextPath}/IncentivesPortal`),
         proxy: {
-          [`/${contextPath}/ui-services`]: {
-            
-              target: envs[contextPath],
-              secure: false,
-              changeOrigin: true,
-              cookieDomainRewrite: true,
-              headers: {
-                'Cookie': '<INTERT Cookie HERE>'
-              }
-          }
+          [`/${contextPath}/ui-services`]: proxy,
+          [`/${contextPath}/rest`]: proxy
         },
         open: true,
         openPage: `${contextPath}/IncentivesPortal`
