@@ -71,7 +71,8 @@ module.exports = {
         publicPath: path.join(__dirname, `/dist/${contextPath}/IncentivesPortal`),
         proxy: {
           [`/${contextPath}/ui-services`]: proxy,
-          [`/${contextPath}/rest`]: proxy
+          [`/${contextPath}/rest`]: proxy,
+          [`/${contextPath}/portal`]: proxy
         },
         open: true,
         openPage: `${contextPath}/IncentivesPortal`
