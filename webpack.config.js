@@ -4,11 +4,12 @@ var WriteFilePlugin = require('write-file-webpack-plugin');
 var CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { BaseHrefWebpackPlugin } = require('base-href-webpack-plugin');
+const ReplaceInFileWebpackPlugin = require('replace-in-file-webpack-plugin');
 
-const contextPath = 'bpmstg'
+const contextPath = 'bpm86dev'
 const envs = {
   bpmstg: 'https://www-qa.accessaudi.com/',
-  bpm86dev: 'https://ssointernal-dev1.vwoa.na.vwg/'
+  bpm86dev: 'https://www-dev.accessaudi.com/'
 }
 
 const proxy = {
@@ -40,6 +41,16 @@ module.exports = {
               from: path.join(__dirname, '/../AICPortal'), 
               to: path.join(__dirname, `dist/${contextPath}/IncentivesPortal`),
               ignore: ['.git/**/*'],
+            }
+          ]),
+          new ReplaceInFileWebpackPlugin([
+            {
+              dir: path.join(__dirname, `dist/${contextPath}/IncentivesPortal/app`),
+              files: ['app.js'],
+              rules: [{
+                  search: '20 * 60 * 1000',
+                  replace: '2000 * 60 * 1000'
+              }]
             }
           ]),
     ],
