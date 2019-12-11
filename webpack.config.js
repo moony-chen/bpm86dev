@@ -45,8 +45,8 @@ module.exports = {
           ]),
           new ReplaceInFileWebpackPlugin([
             {
-              dir: path.join(__dirname, `dist/${contextPath}/IncentivesPortal/app`),
-              files: ['app.js'],
+              dir: path.join(__dirname, `dist/${contextPath}/IncentivesPortal/app/shared/services`),
+              files: ['sessionTimeoutService.js'],
               rules: [{
                   search: '20 * 60 * 1000',
                   replace: '2000 * 60 * 1000'
